@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BloodBridge - Emergency Blood Coordination</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbf7f7;--panel:#fff;--line:#eadcdc;--text:#2a1b1b;--muted:#7b6a6a;--red:#d62839;--red2:#b81f2e;--tint:#fdecee;--green:#1f9d57;--amber:#d9820b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Poppins',system-ui,sans-serif;line-height:1.6}
+h1,h2,h3{margin:0 0 .5rem;font-weight:700}a{color:var(--red)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 1.25rem}
+nav{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;height:64px;gap:1rem;flex-wrap:wrap}
+.brand{font-weight:700;font-size:1.25rem;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:.5rem}
+.drop{width:14px;height:18px;background:var(--red);border-radius:50% 50% 50% 50%/62% 62% 38% 38%;animation:beat 1.6s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+nav .links a{margin-left:1.4rem;text-decoration:none;color:var(--muted);font-weight:500;position:relative}
+nav .links a::after{content:"";position:absolute;left:0;bottom:-4px;height:2px;width:0;background:var(--red);transition:width .25s}
+nav .links a:hover{color:var(--red)}nav .links a:hover::after{width:100%}
+.hero{padding:3.5rem 0 1.5rem;display:grid;grid-template-columns:1.3fr 1fr;gap:2rem;align-items:center}
+.hero h1{font-size:clamp(1.8rem,4vw,2.9rem);line-height:1.15}.hero h1 em{color:var(--red);font-style:normal}
+.hero p{color:var(--muted);max-width:560px}
+.tag{display:inline-block;background:var(--tint);color:var(--red);border-radius:999px;padding:.2rem .9rem;font-size:.8rem;font-weight:600;margin-bottom:1rem}
+.cta{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.2rem}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.25rem;transition:transform .2s,box-shadow .2s,border-color .2s}
+.lift:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(214,40,57,.12);border-color:var(--red)}
+.stat b{display:block;font-size:2rem;color:var(--red)}.stat span{color:var(--muted);font-size:.85rem}
+section{padding:2rem 0}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}.reveal.in{opacity:1;transform:none}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.25rem}
+label{display:block;font-size:.82rem;color:var(--muted);margin:.7rem 0 .25rem;font-weight:500}
+input,select{width:100%;padding:.65rem .8rem;background:#fff;border:1.5px solid var(--line);border-radius:10px;color:var(--text);font:inherit;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{outline:0;border-color:var(--red);box-shadow:0 0 0 3px var(--tint)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+button,.btn{background:var(--red);color:#fff;border:0;border-radius:10px;padding:.65rem 1.3rem;font:inherit;font-weight:600;cursor:pointer;margin-top:1rem;text-decoration:none;display:inline-block;position:relative;overflow:hidden;transition:transform .15s,background .2s}
+button:hover,.btn:hover{background:var(--red2);transform:translateY(-2px)}button:active{transform:scale(.96)}
+button.ghost,.btn.ghost{background:#fff;color:var(--red);border:1.5px solid var(--red)}button.ghost:hover{background:var(--tint)}
+button.sm{padding:.3rem .8rem;margin:0;font-size:.8rem}button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rp .6s linear;pointer-events:none}
+@keyframes rp{to{transform:scale(4);opacity:0}}
+.bar{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin:1rem 0}
+.bar input{max-width:280px}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap}
+.chip{background:#fff;border:1.5px solid var(--line);color:var(--text);border-radius:999px;padding:.25rem .85rem;font-size:.82rem;margin:0;font-weight:500}
+.chip:hover{border-color:var(--red);color:var(--red);background:#fff}.chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.reqs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem}
+.req{animation:pop .45s both}@keyframes pop{from{opacity:0;transform:scale(.92) translateY(10px)}}
+.req .grp{font-size:2rem;font-weight:700;color:var(--red);line-height:1}.req p{margin:.2rem 0;color:var(--muted);font-size:.88rem}
+.pill{display:inline-flex;align-items:center;gap:.35rem;border-radius:999px;padding:.1rem .7rem;font-size:.74rem;font-weight:600;border:1.5px solid}
+.Critical{color:var(--red);border-color:var(--red);background:var(--tint)}.Urgent{color:var(--amber);border-color:var(--amber)}.Normal,.Fulfilled{color:var(--green);border-color:var(--green)}.Open{color:var(--red);border-color:var(--red)}.Cancelled{color:var(--muted);border-color:var(--muted)}
+.Critical::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink 1s infinite}@keyframes blink{50%{opacity:.2}}
+.empty{color:var(--muted);padding:1.5rem;text-align:center;grid-column:1/-1}
+.mbar{display:flex;align-items:flex-end;gap:.6rem;height:150px;margin-top:.5rem}
+.mbar div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:.75rem;color:var(--muted)}
+.mbar i{display:block;width:100%;background:var(--red);border-radius:6px 6px 0 0;min-height:3px;transition:height .8s cubic-bezier(.2,.8,.2,1);height:0}
+.mbar i.b2{background:#f2a3ab}
+.legend{font-size:.78rem;color:var(--muted);margin-top:.6rem;display:flex;gap:1rem}.legend s{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--red);text-decoration:none;margin-right:.3rem}.legend s+s,.legend span:last-child s{background:#f2a3ab}
+.donut{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}.donut svg{width:130px;height:130px;transform:rotate(-90deg)}.donut circle{transition:stroke-dasharray .9s}
+.compat{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin:.8rem 0}
+.compat button{margin:0;background:var(--tint);color:var(--red);border:1.5px solid transparent;font-size:1.1rem}.compat button.on{background:var(--red);color:#fff}
+.mini{display:flex;gap:.4rem;flex-wrap:wrap;min-height:36px}.mini span{background:var(--tint);color:var(--red);padding:.15rem .7rem;border-radius:8px;font-weight:600;animation:pop .3s both}
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:18px;padding:1.5rem;max-width:380px;width:92%}dialog[open]{animation:pop .3s}dialog::backdrop{background:rgba(42,27,27,.55)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{text-align:left;padding:.6rem;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:500}tbody tr:hover{background:var(--tint)}
+.scroll{overflow-x:auto}.tabs{display:flex;gap:.5rem;margin:1.5rem 0 1rem}.tabs button{margin:0}
+#toasts{position:fixed;right:1rem;bottom:1rem;z-index:50;display:grid;gap:.5rem}
+.toast{background:var(--text);color:#fff;padding:.7rem 1.1rem;border-radius:10px;border-left:4px solid var(--red);animation:slide .35s}.toast.good{border-color:#3ddc84}
+@keyframes slide{from{transform:translateX(120%);opacity:0}}
+.msg{margin-top:.6rem;font-size:.88rem}.err{color:var(--red)}
+footer{border-top:1px solid var(--line);padding:1.5rem 0;color:var(--muted);font-size:.82rem;margin-top:2rem;background:var(--panel)}
+[hidden]{display:none!important}
+@media(max-width:780px){.hero{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<nav><div class="wrap"><a class="brand" href="#/"><span class="drop"></span>BloodBridge</a>
+<div class="links" id="navPub"><a href="#requests">Live Requests</a><a href="#insights">Insights</a><a href="#request">Request Blood</a><a href="#donate">Donate</a><a href="#/admin">Admin</a></div>
+<div class="links" id="navAdm" hidden><a href="#/">Public site</a><a href="#" id="logout" hidden>Log out</a></div></div></nav>
+
+<div id="pub" class="wrap">
+<header class="hero"><div><span class="tag">Full Stack Project #22</span>
+<h1>Emergency Blood <em>Requirement</em> &amp; Donor Coordination</h1>
+<p>Connecting patients, hospitals, blood banks and registered donors when every minute matters.</p>
+<div class="cta"><a class="btn" href="#request">Request blood</a><a class="btn ghost" href="#donate">Become a donor</a></div></div>
+<div class="stats"><div class="card stat lift"><b data-n="sD">0</b><span>Registered donors</span></div><div class="card stat lift"><b data-n="sO">0</b><span>Open requests</span></div>
+<div class="card stat lift"><b data-n="sF">0</b><span>Fulfilled</span></div><div class="card stat lift"><b data-n="sC">0</b><span>Critical now</span></div></div></header>
+
+<section id="requests" class="reveal"><h2>Live Blood Requests</h2>
+<div class="bar"><input id="q" placeholder="Search hospital or city..."><div class="chips" id="gChips"></div></div>
+<div class="chips" id="uChips" style="margin-bottom:1rem"></div>
+<div class="reqs" id="reqList"></div></section>
+
+<section id="insights" class="grid2 reveal">
+<div class="card"><h2>Donors vs open demand</h2><div class="mbar" id="chart"></div><div class="legend"><span><s></s>Donors</span><span><s></s>Open requests</span></div></div>
+<div class="card"><h2>Who can give to me?</h2><p style="color:var(--muted);font-size:.88rem;margin:0">Tap your blood group to see compatible donor groups.</p>
+<div class="compat" id="compat"></div><div class="mini" id="compatOut"></div></div></section>
+
+<section class="grid2 reveal">
+<div class="card" id="request"><h2>Request Blood</h2><form id="reqForm">
+<label>Patient name</label><input name="patient" required>
+<div class="row"><div><label>Blood group</label><select name="bg" class="bg" required></select></div><div><label>Units needed</label><input type="number" name="units" min="1" max="20" value="1" required></div></div>
+<label>Hospital / blood bank</label><input name="hospital" required>
+<div class="row"><div><label>City</label><input name="city" required></div><div><label>Urgency</label><select name="urgency"><option>Critical</option><option>Urgent</option><option>Normal</option></select></div></div>
+<label>Contact number</label><input name="contact" required><button>Send emergency request</button></form></div>
+<div class="card" id="donate"><h2>Become a Donor</h2><form id="donForm">
+<label>Full name</label><input name="name" required>
+<div class="row"><div><label>Blood group</label><select name="bg" class="bg" required></select></div><div><label>City</label><input name="city" required></div></div>
+<label>Phone number</label><input name="phone" required><button>Register as donor</button></form></div></section></div>
+
+<div id="adm" class="wrap" hidden>
+<div id="loginBox" style="max-width:380px;margin:4rem auto"><div class="card"><h2>Admin Login</h2>
+<form id="loginForm"><label>Password</label><input type="password" id="pw" required><button>Sign in</button><div class="msg err" id="loginMsg"></div></form></div></div>
+<div id="app" hidden>
+<div class="grid2" style="margin-top:1.5rem"><div class="card"><h2>Requests by blood group</h2><div class="mbar" id="aChart"></div></div>
+<div class="card"><h2>Request status</h2><div class="donut" id="aDonut"></div></div></div>
+<div class="tabs"><button data-tab="reqs">Requests</button><button class="ghost" data-tab="donors">Donors</button></div>
+<div class="bar"><input id="aq" placeholder="Search in table..."><div class="chips" id="aChips"></div></div>
+<div id="tab-reqs" class="card scroll"></div><div id="tab-donors" class="card scroll" hidden></div>
+<div id="detail" class="card" style="margin-top:1.25rem" hidden></div></div></div>
+
+<dialog id="dlg"><h3>I can donate</h3><p id="dlgInfo" style="color:var(--muted)"></p>
+<form id="respForm"><label>Your name</label><input name="name" required><label>Phone</label><input name="phone" required>
+<div style="display:flex;gap:.5rem"><button>Send</button><button type="button" class="ghost" id="dlgClose">Cancel</button></div></form></dialog>
+<div id="toasts"></div>
+<footer><div class="wrap">LifeLink - Emergency Blood Coordination System. In a medical emergency, call your local emergency number first.</div></footer>
+
+<script>
+const G=['A+','A-','B+','B-','AB+','AB-','O+','O-'];
+const FROM={'A+':['A+','A-','O+','O-'],'A-':['A-','O-'],'B+':['B+','B-','O+','O-'],'B-':['B-','O-'],'AB+':G,'AB-':['A-','B-','AB-','O-'],'O+':['O+','O-'],'O-':['O-']};
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const when=s=>new Date(String(s).replace(' ','T')+'Z').toLocaleString();
+function toast(t,good){const d=document.createElement('div');d.className='toast'+(good?' good':'');d.textContent=t;$('#toasts').append(d);setTimeout(()=>d.remove(),3200)}
+$$('.bg').forEach(s=>s.innerHTML='<option value="">Select</option>'+G.map(g=>`<option>${g}</option>`).join(''));
+const chips=(el,list,cur,key)=>{el.innerHTML=list.map(x=>`<button class="chip ${x===cur?'on':''}" data-${key}="${x}">${x}</button>`).join('')};
+
+/* API helper */
+async function api(url,method='GET',body,admin){
+  const h={'Content-Type':'application/json'};if(admin)h['x-token']=sessionStorage.getItem('ll_token')||'';
+  const r=await fetch(url,{method,headers:h,body:body?JSON.stringify(body):undefined});let j={};try{j=await r.json()}catch(e){}
+  if(r.status===401&&admin){sessionStorage.removeItem('ll_token');route();throw new Error('Session expired. Please log in again.')}
+  if(!r.ok)throw new Error(j.error||'Something went wrong');return j}
+const run=fn=>fn().catch(e=>toast(e.message));
+
+/* ripple, reveal, counters, charts */
+document.addEventListener('click',e=>{const b=e.target.closest('button,.btn');if(!b)return;const r=b.getBoundingClientRect(),s=Math.max(r.width,r.height),d=document.createElement('span');
+d.className='ripple';d.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-r.left-s/2}px;top:${e.clientY-r.top-s/2}px`;b.append(d);setTimeout(()=>d.remove(),600)});
+const io=new IntersectionObserver(es=>es.forEach(x=>x.isIntersecting&&x.target.classList.add('in')),{threshold:.1});$$('.reveal').forEach(x=>io.observe(x));
+const shown={};function count(id,to){const el=$(`[data-n=${id}]`),from=shown[id]||0;shown[id]=to;const t0=performance.now();
+(function f(t){const p=Math.min((t-t0)/700,1);el.textContent=Math.round(from+(to-from)*p);if(p<1)requestAnimationFrame(f)})(t0)}
+function bars(el,a,b){const m=Math.max(1,...a,...(b||[]));el.innerHTML=G.map((g,i)=>`<div><span>${a[i]}${b?'/'+b[i]:''}</span><span style="display:flex;gap:2px;align-items:flex-end;flex:1;width:100%"><i data-h="${a[i]/m*100}"></i>${b?`<i class="b2" data-h="${b[i]/m*100}"></i>`:''}</span>${g}</div>`).join('');
+requestAnimationFrame(()=>requestAnimationFrame(()=>el.querySelectorAll('i').forEach(i=>i.style.height=i.dataset.h+'%')))}
+
+/* routing */
+function route(){const a=location.hash==='#/admin';$('#pub').hidden=a;$('#adm').hidden=!a;$('#navPub').hidden=a;$('#navAdm').hidden=!a;
+if(a){const li=!!sessionStorage.getItem('ll_token');$('#loginBox').hidden=li;$('#app').hidden=!li;$('#logout').hidden=!li;if(li)loadAdmin()}else loadPublic()}
+addEventListener('hashchange',route);
+
+/* ---------- public ---------- */
+let P={reqs:[],donors:[],fulfilled:0},fg='All',fu='All',cg=null,respId=null;
+const loadPublic=()=>api('/api/public').then(d=>{P=d;renderPublic()}).catch(()=>{});
+function renderPublic(){
+const open=P.reqs;
+count('sD',P.donors.length);count('sO',open.length);count('sF',P.fulfilled);count('sC',open.filter(r=>r.urgency==='Critical').length);
+chips($('#gChips'),['All',...G],fg,'g');chips($('#uChips'),['All','Critical','Urgent','Normal'],fu,'u');
+const q=$('#q').value.toLowerCase(),rank={Critical:0,Urgent:1,Normal:2};
+const list=open.filter(r=>(fg==='All'||r.bg===fg)&&(fu==='All'||r.urgency===fu)&&(r.hospital+' '+r.city).toLowerCase().includes(q)).sort((a,b)=>rank[a.urgency]-rank[b.urgency]||b.id-a.id);
+$('#reqList').innerHTML=list.length?list.map((r,i)=>`<div class="card req lift" style="animation-delay:${i*50}ms"><div style="display:flex;justify-content:space-between;align-items:center">
+<span class="grp">${esc(r.bg)}</span><span class="pill ${esc(r.urgency)}">${esc(r.urgency)}</span></div><p>${r.units} unit(s) needed</p><p>${esc(r.hospital)}, ${esc(r.city)}</p><p>Posted ${when(r.created_at)}</p>
+<button class="sm" style="margin-top:.6rem" data-resp="${r.id}" data-info="${esc(r.bg)} at ${esc(r.hospital)}">I can donate</button></div>`).join(''):'<div class="empty">No matching requests.</div>';
+bars($('#chart'),G.map(g=>P.donors.filter(d=>d.bg===g).length),G.map(g=>open.filter(r=>r.bg===g).length));
+$('#compat').innerHTML=G.map(g=>`<button data-c="${g}" class="${g===cg?'on':''}">${g}</button>`).join('');
+$('#compatOut').innerHTML=cg?FROM[cg].map(g=>`<span>${g}</span>`).join(''):''}
+$('#q').oninput=renderPublic;
+$('#pub').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;
+if(t.dataset.g){fg=t.dataset.g;renderPublic()}if(t.dataset.u){fu=t.dataset.u;renderPublic()}if(t.dataset.c){cg=cg===t.dataset.c?null:t.dataset.c;renderPublic()}
+if(t.dataset.resp){respId=+t.dataset.resp;$('#dlgInfo').textContent='Request: '+t.dataset.info;$('#dlg').showModal()}});
+$('#reqForm').onsubmit=e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));
+run(async()=>{await api('/api/requests','POST',f);e.target.reset();toast('Emergency request sent',true);await loadPublic()})};
+$('#donForm').onsubmit=e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));
+run(async()=>{await api('/api/donors','POST',f);e.target.reset();toast('Thank you! You are registered',true);await loadPublic()})};
+$('#dlgClose').onclick=()=>$('#dlg').close();
+$('#respForm').onsubmit=e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));
+run(async()=>{await api(`/api/requests/${respId}/respond`,'POST',f);e.target.reset();$('#dlg').close();toast('Thank you! The coordinator will contact you',true)})};
+
+/* ---------- admin ---------- */
+$('#loginForm').onsubmit=async e=>{e.preventDefault();
+try{const j=await api('/api/admin/login','POST',{password:$('#pw').value});sessionStorage.setItem('ll_token',j.token);$('#pw').value='';$('#loginMsg').textContent='';toast('Welcome, admin',true);route()}
+catch(x){$('#loginMsg').textContent=x.message}};
+$('#logout').onclick=e=>{e.preventDefault();sessionStorage.removeItem('ll_token');route()};
+let A={requests:[],donors:[],responses:[],notes:[]},tab='reqs',fs='All',openId=null;
+const loadAdmin=()=>api('/api/admin/all','GET',null,true).then(d=>{A=d;renderAdmin()}).catch(e=>toast(e.message));
+$$('.tabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;$$('.tabs button').forEach(x=>x.className='ghost');b.className='';renderAdmin()});
+$('#aq').oninput=renderAdmin;
+function renderAdmin(){
+const reqs=A.requests,notes=A.notes,resps=A.responses,donors=A.donors,q=$('#aq').value.toLowerCase();
+$('#tab-reqs').hidden=tab!=='reqs';$('#tab-donors').hidden=tab!=='donors';$('#aChips').hidden=tab!=='reqs';
+chips($('#aChips'),['All','Open','Fulfilled','Cancelled'],fs,'s');
+bars($('#aChart'),G.map(g=>reqs.filter(r=>r.bg===g).length));
+const st=['Open','Fulfilled','Cancelled'].map(s=>reqs.filter(r=>r.status===s).length),tot=st.reduce((a,b)=>a+b,0),col=['#d62839','#1f9d57','#b9a9a9'];let off=0;
+$('#aDonut').innerHTML=`<svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#f3e6e6" stroke-width="6"/>${st.map((n,i)=>{const p=tot?n/tot*100:0,c=`<circle cx="21" cy="21" r="15.9" fill="none" stroke="${col[i]}" stroke-width="6" stroke-dasharray="${p} ${100-p}" stroke-dashoffset="${-off}"/>`;off+=p;return c}).join('')}</svg>
+<div>${['Open','Fulfilled','Cancelled'].map((s,i)=>`<div><b style="color:${col[i]}">&#9632;</b> ${s}: <b>${st[i]}</b></div>`).join('')}</div>`;
+const rr=reqs.slice().reverse().filter(r=>(fs==='All'||r.status===fs)&&(r.patient+r.hospital+r.city+r.bg).toLowerCase().includes(q));
+$('#tab-reqs').innerHTML=`<table><tr><th>Patient</th><th>Group</th><th>Units</th><th>Hospital</th><th>Urgency</th><th>Contact</th><th>Notified</th><th>Replies</th><th>Status</th><th></th></tr>`+
+(rr.map(r=>`<tr><td>${esc(r.patient)}</td><td><b>${esc(r.bg)}</b></td><td>${r.units}</td><td>${esc(r.hospital)}, ${esc(r.city)}</td><td><span class="pill ${esc(r.urgency)}">${esc(r.urgency)}</span></td><td>${esc(r.contact)}</td>
+<td>${notes.filter(n=>n.rid===r.id).length}</td><td>${resps.filter(x=>x.rid===r.id).length}</td>
+<td><select data-status="${r.id}" style="width:auto">${['Open','Fulfilled','Cancelled'].map(s=>`<option ${s===r.status?'selected':''}>${s}</option>`).join('')}</select></td>
+<td><button class="sm" data-open="${r.id}">Match donors</button></td></tr>`).join('')||'<tr><td colspan="10">No requests found.</td></tr>')+'</table>';
+const dd=donors.slice().reverse().filter(d=>(d.name+d.city+d.bg+d.phone).toLowerCase().includes(q));
+$('#tab-donors').innerHTML=`<table><tr><th>Name</th><th>Group</th><th>City</th><th>Phone</th><th>Available</th><th></th></tr>`+
+(dd.map(d=>`<tr><td>${esc(d.name)}</td><td><b>${esc(d.bg)}</b></td><td>${esc(d.city)}</td><td>${esc(d.phone)}</td><td><button class="sm ${d.available?'':'ghost'}" data-avail="${d.id}">${d.available?'Yes':'No'}</button></td>
+<td><button class="sm ghost" data-del="${d.id}">Delete</button></td></tr>`).join('')||'<tr><td colspan="6">No donors found.</td></tr>')+'</table>';
+if(openId)detail(openId)}
+function detail(id){openId=id;const r=A.requests.find(x=>x.id===id);if(!r)return;
+const same=d=>d.city.toLowerCase()===r.city.toLowerCase(),done=d=>A.notes.some(n=>n.rid===id&&n.did===d.id);
+const ds=A.donors.filter(d=>d.available&&FROM[r.bg].includes(d.bg)).sort((a,b)=>same(b)-same(a)),todo=ds.filter(d=>same(d)&&!done(d)).map(d=>d.id),rs=A.responses.filter(x=>x.rid===id).reverse();
+const box=$('#detail');box.hidden=false;
+box.innerHTML=`<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem"><h3>${esc(r.bg)} at ${esc(r.hospital)}, ${esc(r.city)}</h3>
+<button class="sm" data-notifyall="${todo.join(',')}" ${todo.length?'':'disabled'}>Notify ${todo.length} local donor(s)</button></div>
+<h3 style="margin-top:1rem;font-size:1rem">Compatible available donors (${ds.length})</h3><div class="scroll"><table><tr><th>Name</th><th>Group</th><th>City</th><th>Phone</th><th></th></tr>`+
+(ds.map(d=>`<tr><td>${esc(d.name)}</td><td>${esc(d.bg)}</td><td>${esc(d.city)}${same(d)?' (same city)':''}</td><td>${esc(d.phone)}</td><td>${done(d)?'<span class="pill Fulfilled">Notified</span>':`<button class="sm" data-notify="${d.id}">Notify</button>`}</td></tr>`).join('')||'<tr><td colspan="5">No compatible donors available.</td></tr>')+
+`</table></div><h3 style="margin-top:1rem;font-size:1rem">Donor responses (${rs.length})</h3><div class="scroll"><table><tr><th>Name</th><th>Phone</th><th>Time</th></tr>`+(rs.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone)}</td><td>${when(x.created_at)}</td></tr>`).join('')||'<tr><td colspan="3">No responses yet.</td></tr>')+'</table></div>'}
+const notify=ids=>run(async()=>{const j=await api(`/api/admin/requests/${openId}/notify`,'POST',{donor_ids:ids},true);toast(j.notified+' donor(s) notified',true);await loadAdmin()});
+$('#adm').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;
+if(t.dataset.s){fs=t.dataset.s;renderAdmin()}
+if(t.dataset.open){openId=+t.dataset.open;renderAdmin();$('#detail').scrollIntoView({behavior:'smooth'})}
+if(t.dataset.notify)notify([+t.dataset.notify]);if(t.dataset.notifyall)notify(t.dataset.notifyall.split(',').map(Number));
+if(t.dataset.avail){const d=A.donors.find(x=>x.id==t.dataset.avail);run(async()=>{await api('/api/admin/donors/'+d.id,'PATCH',{available:!d.available},true);await loadAdmin()})}
+if(t.dataset.del&&confirm('Delete this donor?'))run(async()=>{await api('/api/admin/donors/'+t.dataset.del,'DELETE',null,true);toast('Donor deleted');await loadAdmin()})});
+$('#adm').addEventListener('change',e=>{if(!e.target.dataset.status)return;
+run(async()=>{await api('/api/admin/requests/'+e.target.dataset.status,'PATCH',{status:e.target.value},true);toast('Status updated to '+e.target.value,true);await loadAdmin()})});
+
+/* live updates: poll every 8 seconds */
+setInterval(()=>{if(document.hidden||$('#dlg').open||document.activeElement.tagName==='SELECT')return;
+if(location.hash==='#/admin'){if(sessionStorage.getItem('ll_token'))loadAdmin()}else loadPublic()},8000);
+route();
+</script></body></html>

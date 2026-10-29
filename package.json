@@ -1,0 +1,9 @@
+{
+  "name": "lifelink-blood-coordination",
+  "version": "2.0.0",
+  "description": "Emergency Blood Requirement & Donor Coordination System (Express + SQLite)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=22.5" },
+  "dependencies": { "express": "^4.19.2" }
+}
